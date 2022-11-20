@@ -6884,21 +6884,7 @@ class PlayState extends MusicBeatState
 
 
 	function chromaVideo(name:String){
-		var video = new MP4Sprite(0,0);
-		video.scrollFactor.set();
-		video.cameras = [camHUD];
-		video.shader = new GreenScreenShader();
-		video.visible=false;
-		video.finishCallback = function(){
-			trace("video gone");
-			remove(video);
-			video.destroy();
-		}
-		video.playVideo(Paths.video(name));
-		video.readyCallback = function(){
-			video.visible=true;
-		}
-		add(video);
+		
 	}
 
 	function majinSaysFuck(numb:Int):Void
