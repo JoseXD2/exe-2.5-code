@@ -48,10 +48,7 @@ class Intro extends MusicBeatState
       FlxG.sound.muteKeys = [];
   		FlxG.sound.volumeDownKeys = [];
   		FlxG.sound.volumeUpKeys = [];
-        var video = new MP4Handler();
-        video.canSkip=false;
-		video.finishCallback = function()
-		{
+        
       FlxG.sound.muteKeys = TitleState.muteKeys;
       FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
       FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;    
@@ -64,7 +61,6 @@ class Intro extends MusicBeatState
               }});
           }
         });
-		}
-		video.playVideo(Paths.video('HaxeFlixelIntro'));
+		
     }
 }
