@@ -103,7 +103,7 @@ class Main extends Sprite
 	public function getFPS():Float{
 		return fpsVar.currentFPS;	
 	}
-}
+
 
 #if CRASH_HANDLER
 	function onCrash(e:UncaughtErrorEvent):Void
