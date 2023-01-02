@@ -225,26 +225,26 @@ class MainMenuState extends MusicBeatState
 		}
 		if (!selectedSomethin)
 		{
-				if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.W)
+				if (controls.UI_UP_P)
 				{
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 					changeItem(-1);
 				}
 
-				if (FlxG.keys.justPressed.DOWN || FlxG.keys.justPressed.S)
+				if (controls.UI_DOWN_P)
 				{
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 					changeItem(1);
 				}
 
-				if (FlxG.keys.justPressed.BACKSPACE || FlxG.keys.justPressed.ESCAPE)
+				if (controls.BACK)
 				{
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('cancelMenu'));
 					MusicBeatState.switchState(new TitleState());
 				}
 
-		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE)
+		if (controls.ACCEPT)
 			{
 				if (optionShit[curSelected] == 'donate')
 				{
