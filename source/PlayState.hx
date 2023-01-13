@@ -70,6 +70,9 @@ import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.tweens.FlxTween.FlxTweenManager;
 import flixel.system.scaleModes.StageSizeScaleMode;
 import flixel.system.scaleModes.BaseScaleMode;
+
+import ui.Mobilecontrols;
+
 using StringTools;
 
 #if desktop
@@ -477,6 +480,11 @@ class PlayState extends MusicBeatState
 		"fatality",
 		"b4cksl4sh",
 	];
+	
+	
+	#if mobileC
+	var mcontrols:Mobilecontrols; 
+	#end
 
 	var hudStyle:String = 'sonic2';
 	public var sonicHUDStyles:Map<String, String> = [
@@ -2285,6 +2293,28 @@ class PlayState extends MusicBeatState
 		centerP.screenCenter(XY);
 
 		center = FlxPoint.get(centerP.x, centerP.y);
+				
+				#if mobileC
+			mcontrols = new Mobilecontrols();
+			switch (mcontrols.mode)
+			{
+				case VIRTUALPAD_RIGHT | VIRTUALPAD_LEFT | VIRTUALPAD_CUSTOM:
+					controls.setVirtualPad(mcontrols._virtualPad, FULL, NONE);
+				case HITBOX:
+					controls.setHitBox(mcontrols._hitbox);
+				default:
+			}
+			trackedinputs = controls.trackedinputs;
+			controls.trackedinputs = [];
+			var camcontrol = new FlxCamera();
+			FlxG.cameras.add(camcontrol);
+			camcontrol.bgColor.alpha = 0;
+			mcontrols.cameras = [camcontrol];
+
+			mcontrols.visible = false;
+
+			add(mcontrols);
+		#end
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -2976,6 +3006,10 @@ class PlayState extends MusicBeatState
 
 	public function startCountdown():Void
 	{
+		#if mobileC
+		mcontrols.visible = true;
+		#end
+			
 		if (startedCountdown)
 		{
 			callOnLuas('onStartCountdown', []);
@@ -4231,7 +4265,7 @@ class PlayState extends MusicBeatState
 		}
 		botplayTxt.visible = cpuControlled;
 
-		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
+				if (controls.PAUSE #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
 		{
 			// B-B-BB-B-B-B-BUT MR. CRYBIT!!! THIS IS UNOPTIMIZED!!! shut up you're literally like 5 years old you stupid child why do you exist in this plane of existance cease to exist in t-90 seconds or i will persnally manually have to remove you from the mortal realm you wretched fool.
 			FlxTween.globalManager.forEach(function(tween:FlxTween)
@@ -4855,10 +4889,10 @@ class PlayState extends MusicBeatState
 
 			FlxG.watch.addQuick("rendered notes", notes.members.length);
 			// reset bf's animation
-			var up = controls.NOTE_UP;
-			var right = controls.NOTE_RIGHT;
-			var down = controls.NOTE_DOWN;
-			var left = controls.NOTE_LEFT;
+			var up = controls.UI_UP;
+		var right = controls.UI_RIGHT;
+		var down = controls.UI_DOWN;
+		var left = controls.UI_LEFT;
 			var holdControls:Array<Bool> = [left, down, up, right];
 			if (SONG.isRing)
 				holdControls = [left, down, FlxG.keys.pressed.SPACE, up, right];
@@ -5894,6 +5928,10 @@ class PlayState extends MusicBeatState
 
 	public function endSong():Void
 	{
+		#if mobileC
+		mcontrols.visible = false;
+		#end
+			
 		// Should kill you if you tried to cheat
 		if (!startingSong)
 		{
